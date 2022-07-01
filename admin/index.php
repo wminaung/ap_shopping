@@ -1,4 +1,5 @@
 <?php
+################## Product Page ##################  
 session_start();
 require '../config/config.php';
 require '../config/common.php';
@@ -42,37 +43,38 @@ include('header.php');
 
           <?php
           ##################pagination and retrieve #########################
-          //  if (!empty($_GET['pageno'])) {
-          //   $pageno = $_GET['pageno'];
-          // } else {
-          //   $pageno = 1;
-          // }
-          // $num_rec = 2;
-          // $offset = ($pageno - 1) * $num_rec;
-          // if (empty($_POST['search']) && empty($_COOKIE['search'])) {
 
-          //   $stmt = $pdo->prepare("SELECT * FROM posts ORDER BY id DESC");
-          //   $stmt->execute();
-          //   $rawresult = $stmt->fetchAll(PDO::FETCH_ASSOC);
-          //   $total_posts = count($rawresult);
-          //   $total_pages = ceil(count($rawresult) / $num_rec);
+          if (!empty($_GET['pageno'])) {
+            $pageno = $_GET['pageno'];
+          } else {
+            $pageno = 1;
+          }
+          $num_rec = 2;
+          $offset = ($pageno - 1) * $num_rec;
+          if (empty($_POST['search']) && empty($_COOKIE['search'])) {
 
-          //   $stmt = $pdo->prepare("SELECT * FROM posts ORDER BY id DESC LIMIT $offset,$num_rec");
-          //   $stmt->execute();
-          //   $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-          // } else {
-          //   $userInput = !empty($_POST['search']) ? $_POST['search'] : $_COOKIE['search'];
-          //   $userInput = htmlspecialchars($userInput);
-          //   $stmt = $pdo->prepare("SELECT * FROM posts  WHERE title LIKE '%$userInput%' ORDER BY id DESC");
-          //   $stmt->execute();
-          //   $rawresult = $stmt->fetchAll(PDO::FETCH_ASSOC);
-          //   $total_posts = count($rawresult);
-          //   $total_pages = ceil(count($rawresult) / $num_rec);
+            $stmt = $pdo->prepare("SELECT * FROM products ORDER BY id DESC");
+            $stmt->execute();
+            $rawresult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $total_posts = count($rawresult);
+            $total_pages = ceil(count($rawresult) / $num_rec);
 
-          //   $stmt = $pdo->prepare("SELECT * FROM posts  WHERE title LIKE '%$userInput%' ORDER BY id DESC LIMIT $offset,$num_rec");
-          //   $stmt->execute();
-          //   $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-          // } 
+            $stmt = $pdo->prepare("SELECT * FROM products ORDER BY id DESC LIMIT $offset,$num_rec");
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+          } else {
+            $userInput = !empty($_POST['search']) ? $_POST['search'] : $_COOKIE['search'];
+            $userInput = htmlspecialchars($userInput);
+            $stmt = $pdo->prepare("SELECT * FROM products  WHERE name LIKE '%$userInput%' ORDER BY id DESC");
+            $stmt->execute();
+            $rawresult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $total_posts = count($rawresult);
+            $total_pages = ceil(count($rawresult) / $num_rec);
+
+            $stmt = $pdo->prepare("SELECT * FROM products  WHERE name LIKE '%$userInput%' ORDER BY id DESC LIMIT $offset,$num_rec");
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+          }
 
 
           ?>
@@ -82,7 +84,7 @@ include('header.php');
               total posts <i> : <b></b></i>
             </div> -->
             <div>
-              <a href="add.php" type="button" class="btn btn-primary">New Product</a>
+              <a href="product_add.php" type="button" class="btn btn-primary">New Product</a>
 
             </div>
             <br>
@@ -90,29 +92,39 @@ include('header.php');
               <thead>
                 <tr>
                   <th style="width: 10px">#</th>
-                  <th>Title</th>
-                  <th>Content</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Category</th>
+                  <th>In Stock</th>
+                  <th>Price</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
 
                 <?php
-                /***************************************** 
+
                 if ($result) {
-                  //  $i=1;
+                  $i = ($pageno * $num_rec) - $num_rec + 1;
                   foreach ($result as $value) {
-                    $i = $value['id'];
+
+                    $catStmt = $pdo->prepare("SELECT * FROM categories WHERE id=" . $value['category_id']);
+                    $catStmt->execute();
+                    $catResult = $catStmt->fetchAll(PDO::FETCH_ASSOC);
+
                 ?>
                     <tr>
                       <td><?php echo "$i"; ?></td>
-                      <td><?php echo escape($value['title']); ?></td>
+                      <td><?php echo escape($value['name']); ?></td>
                       <td>
-                        <?php echo escape(substr($value['content'], 0, 70)); ?>
+                        <?php echo escape(substr($value['description'], 0, 30)); ?>
                       </td>
+                      <td><?php echo $catResult[0]['name'] ?></td>
+                      <td><?php echo escape($value['quantity']); ?></td>
+                      <td><?php echo escape($value['price']); ?></td>
                       <td style="width: 15%">
-                        <a href="edit.php?id=<?php echo $value['id'] ?>" type="button" class="btn btn-warning">Edit</a>
-                        <a href="delete.php?id=<?php echo $value['id'] ?>" onclick="return confirm('Are you sure you want to delete this item?');" type="button" class="btn btn-danger">Delete</a>
+                        <a href="product_edit.php?id=<?php echo $value['id'] ?>" type="button" class="btn btn-warning">Edit</a>
+                        <a href="product_delete.php?id=<?php echo $value['id'] ?>" onclick="return confirm('Are you sure you want to delete this item?');" type="button" class="btn btn-danger">Delete</a>
 
                       </td>
                     </tr>
@@ -120,7 +132,7 @@ include('header.php');
                     $i++;
                   }
                 }
-                 *****************************************/
+
                 ?>
 
               </tbody>
@@ -132,7 +144,7 @@ include('header.php');
                 <li class="page-item"><a class="page-link" href="?pageno=1">First</a></li>
                 <li class="page-item <?php echo  $pageno <= 1 ? 'disabled' :  "" ?>"><a class="page-link" href="<?php echo $pageno <= 1 ? "#" : "?pageno=" . ($pageno - 1); ?>">Previous</a></li>
                 <li class="page-item">
-                  <a class="page-link" href="#"><?php echo  "no" //$pageno; 
+                  <a class="page-link" href="#"><?php echo $pageno;
                                                 ?></a>
                 </li>
                 <li class="page-item <?php echo  $pageno >= $total_pages ? 'disabled' :  "" ?>">

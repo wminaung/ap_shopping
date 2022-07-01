@@ -1,1 +1,10 @@
-week 5.3
+week 6.1
+56:20
+
+    $result = $stmt->execute(
+                array(
+                    ':name' => $name, ':description' => $desc,
+                    ':category' => $category, ':quantity' => $qty,
+                    ':price' => $price
+                )
+            );
