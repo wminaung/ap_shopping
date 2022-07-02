@@ -1,10 +1,10 @@
-week 6.1
-56:20
+week 6.2
+10:00
 
-    $result = $stmt->execute(
-                array(
-                    ':name' => $name, ':description' => $desc,
-                    ':category' => $category, ':quantity' => $qty,
-                    ':price' => $price
-                )
-            );
+ echo "<script>alert('Something wroung'); window.location.href='category.php';</script>";
+
+    if (!empty($email)) {
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $emailErr = "Invalid email format";
+            }
+        }
