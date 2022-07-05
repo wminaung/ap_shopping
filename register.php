@@ -7,10 +7,10 @@ require 'config/common.php';
 
 
 
-if (isset($_POST["submit"])) {
+if ($_POST) {
     if (
         empty($_POST["name"]) || empty($_POST["email"]) || empty($_POST["phone"])
-        || empty($_POST["address"]) || empty($_POST["password"])  || (strlen($_POST["password"] < 4))
+        || empty($_POST["address"]) || empty($_POST["password"])  || (strlen($_POST["password"]) < 4)
     ) {
         if (empty($_POST['name'])) {
             $nameError = "*Name is required";
@@ -29,7 +29,6 @@ if (isset($_POST["submit"])) {
         }
         if (strlen($_POST['password']) < 4) {
             $passwordError = "*Password must be 4 character atleast";
-            echo "<script>alert('Password must be 4 character atleast'); </script>";
         }
     } else {
 
@@ -121,11 +120,11 @@ if (isset($_POST["submit"])) {
         </div>
         <div class="search_input" id="search_input_box">
             <div class="container">
-                <!-- <form class="d-flex justify-content-between">
+                <form class="d-flex justify-content-between">
                     <input type="text" class="form-control" id="search_input" placeholder="Search Here">
                     <button type="submit" class="btn"></button>
                     <span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
-                </form> -->
+                </form>
             </div>
         </div>
     </header>
@@ -176,7 +175,7 @@ if (isset($_POST["submit"])) {
 
                             <div class="col-md-12 form-group">
                                 <input type="password" class="form-control" id="password" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'" style="<?php echo empty($passwordError) ? "" : "border: 1px solid red;" ?>">
-                                <?php echo empty($passwordError) ? "" : $passwordError ?>
+                                <p class="text-danger text-left"><?php echo empty($passwordError) ? "" : $passwordError ?></p>
                             </div>
 
                             <div class="col-md-12 form-group">

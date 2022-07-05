@@ -1,13 +1,10 @@
-<!-- Font Awesome Icons -->
-<link rel="stylesheet" href="../admin/plugins/fontawesome-free/css/all.min.css">
-<!-- Theme style -->
-<link rel="stylesheet" href="../admin/dist/css/adminlte.min.css">
+
 <?php
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (!hash_equals($_SESSION['_token'], $_POST['_token'])) {
-        echo "<h1 class='text-danger text-center' style='background: black'><b>Invalid CSRF token</b></h1>";
+        echo "<h1 style='background: black; color: red; text-align:center'><b>Invalid CSRF token</b></h1>";
         die();
     } else {
         unset($_SESSION['_token']);

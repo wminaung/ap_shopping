@@ -49,7 +49,7 @@ include('header.php');
           } else {
             $pageno = 1;
           }
-          $num_rec = 2;
+          $num_rec = 6;
           $offset = ($pageno - 1) * $num_rec;
           if (empty($_POST['search']) && empty($_COOKIE['search'])) {
 
