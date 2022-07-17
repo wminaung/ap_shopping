@@ -1,4 +1,11 @@
 <?php include 'header.php' ?>
+
+<!-- <?php
+        // if (empty($_SESSION['user_id']) && empty($_SESSION['logged_in']) && empty($_SESSION['role'])) {
+        //     header("location: login.php");
+        //     exit();
+        // }
+        ?> -->
 <!--================Cart Area =================-->
 <section class="cart_area">
     <div class="container">

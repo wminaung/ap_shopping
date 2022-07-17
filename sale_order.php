@@ -3,6 +3,13 @@ session_start();
 require 'config/config.php';
 require 'config/common.php';
 
+
+if (empty($_SESSION['user_id']) && empty($_SESSION['logged_in']) && empty($_SESSION['role'])) {
+	header("location: login.php");
+	exit();
+}
+
+
 if (!empty($_SESSION['cart'])) {
 	$userId = $_SESSION['user_id'];
 
@@ -143,7 +150,7 @@ if (!empty($_SESSION['cart'])) {
 				<div class="col-first">
 					<h1>Confirmation</h1>
 					<nav class="d-flex align-items-center">
-						<a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+						<a href="index.php">Home<span class="lnr lnr-arrow-right"></span></a>
 					</nav>
 				</div>
 			</div>

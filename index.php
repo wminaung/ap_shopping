@@ -18,7 +18,7 @@ if (!empty($_GET['pageno'])) {
 } else {
 	$pageno = 1;
 }
-$num_rec = 2;
+$num_rec = 3;
 $offset = ($pageno - 1) * $num_rec;
 if (empty($_POST['search']) && empty($_COOKIE['search'])) {
 
