@@ -1,5 +1,4 @@
-week 6.2
-39:36
+week 7.2
 
  echo "<script>alert('Something wroung'); window.location.href='category.php';</script>";
 
